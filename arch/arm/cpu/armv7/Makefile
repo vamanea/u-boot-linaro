@@ -26,6 +26,7 @@ include $(TOPDIR)/config.mk
 LIB	= $(obj)lib$(CPU).o
 
 START	:= start.o
+SOBJS	:= monitor.o
 
 COBJS	+= cache_v7.o
 

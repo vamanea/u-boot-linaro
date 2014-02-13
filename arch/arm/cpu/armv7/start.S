@@ -296,6 +296,16 @@ jump_2_ram:
  * Move vector table
  */
 #if !defined(CONFIG_TEGRA20)
+	ldr     r0, =_start
+	add     r0, r0, r9
+	ldr     r1, _monitor_base_ofs
+	add     r2, r1, r0
+	mcr     p15, 0, r2, c12, c0, 1 @Set MVBAR
+	push    {lr}
+	bl      _monitor_init
+	pop     {lr}
+
+	/* Now running in non secure mode */
 	/* Set vector address in CP15 VBAR register */
 	ldr     r0, =_start
 	add     r0, r0, r9
@@ -314,6 +324,8 @@ jump_2_ram:
 
 _board_init_r_ofs:
 	.word board_init_r - _start
+_monitor_base_ofs:
+	.word _monitor_base - _start
 ENDPROC(relocate_code)
 #endif
 
